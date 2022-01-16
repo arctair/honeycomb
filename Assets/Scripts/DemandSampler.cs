@@ -5,16 +5,19 @@ using UnityEngine;
 
 public class DemandSampler
 {
-    public int scale = 128;
+    private CoordinateSystem coordinateSystem;
 
-    public float floor = 0.75f;
+    private int noiseScale;
 
-    public float Sample(Vector2 position)
+    public DemandSampler(CoordinateSystem coordinateSystem, int noiseScale)
     {
-        Vector2 scaled = position / scale;
-        float value = Mathf.PerlinNoise(scaled.x, scaled.y);
-        return value < floor
-            ? 0
-            : Mathf.Pow(value - floor, 2) / Mathf.Pow(1 - floor, 2);
+        this.coordinateSystem = coordinateSystem;
+        this.noiseScale = noiseScale;
+    }
+
+    public float Sample(Vector2 axial)
+    {
+        Vector2 point = coordinateSystem.AxialToPixel(axial) / noiseScale;
+        return 3 * Mathf.PerlinNoise(point.x, point.y) - 2;
     }
 }
