@@ -15,11 +15,14 @@ public class Game : MonoBehaviour
     {
         CreateTile(new Vector2(0, 0));
         CreateTile(new Vector2(1, 0));
+        CreateTile(new Vector2(1, -1));
     }
 
     private GameObject CreateTile(Vector2 axial)
     {
-        Vector2 world = axial * new Vector2(Mathf.Sqrt(2), 0);
+        Vector2 world =
+            new Vector2((axial[0] + axial[1] / 2) * Mathf.Sqrt(2),
+                -axial[1] * Mathf.Sqrt(3) / Mathf.Sqrt(2));
 
         GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Cube);
         tile.transform.SetPositionAndRotation (world, pointTopRotation);
