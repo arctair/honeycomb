@@ -13,7 +13,16 @@ public class Game : MonoBehaviour
 
     void Start()
     {
+        CreateTile(new Vector2(0, 0));
+        CreateTile(new Vector2(1, 0));
+    }
+
+    private GameObject CreateTile(Vector2 axial)
+    {
+        Vector2 world = axial * new Vector2(Mathf.Sqrt(2), 0);
+
         GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        tile.transform.SetPositionAndRotation(new Vector3(), pointTopRotation);
+        tile.transform.SetPositionAndRotation (world, pointTopRotation);
+        return tile;
     }
 }
