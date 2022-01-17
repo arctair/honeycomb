@@ -11,13 +11,30 @@ public class Game : MonoBehaviour
                 0,
                 45);
 
+    private Vector2 quadrantDimensions;
+
     void Start()
     {
-        for (int r = 0; r <= 32; r++)
+        int qMax =
+            Mathf
+                .CeilToInt(Camera.main.orthographicSize *
+                Screen.width /
+                Screen.height /
+                Mathf.Sqrt(2));
+
+        int rMax =
+            Mathf
+                .FloorToInt(Camera.main.orthographicSize *
+                Mathf.Sqrt(2) /
+                Mathf.Sqrt(3));
+
+        for (float r = -rMax; r <= rMax; r++)
         {
-            for (int q = 0; q <= 32; q++)
+            for (int q = -qMax; q <= qMax; q++)
             {
-                GameObject tile = CreateTile(new Vector2(q - r / 2, r));
+                GameObject tile =
+                    CreateTile(new Vector2(q - Mathf.FloorToInt((r + 1) / 2),
+                        r));
                 float sample = Sample(tile.transform.position);
                 tile.GetComponent<Renderer>().material.color =
                     Color.HSVToRGB(0.125f, 0.75f, sample);
@@ -29,8 +46,7 @@ public class Game : MonoBehaviour
     {
         Vector2 world =
             new Vector2((axial[0] + axial[1] / 2) * Mathf.Sqrt(2),
-                -axial[1] * Mathf.Sqrt(3) / Mathf.Sqrt(2)) -
-            new Vector2(20f, -20f);
+                -axial[1] * Mathf.Sqrt(3) / Mathf.Sqrt(2));
 
         GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Cube);
         tile.transform.parent = transform;
