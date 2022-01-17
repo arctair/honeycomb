@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceGrid : MonoBehaviour
+public class GameBoard : MonoBehaviour
 {
     public Color color = Color.red;
 
