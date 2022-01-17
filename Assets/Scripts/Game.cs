@@ -13,8 +13,12 @@ public class Game : MonoBehaviour
 
     private Vector2 quadrantDimensions;
 
+    private Shader unlitShader;
+
     void Start()
     {
+        unlitShader = Shader.Find("Unlit/Color");
+
         int qMax =
             Mathf
                 .CeilToInt(Camera.main.orthographicSize *
@@ -51,6 +55,7 @@ public class Game : MonoBehaviour
         GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Cube);
         tile.transform.parent = transform;
         tile.transform.SetPositionAndRotation (world, pointTopRotation);
+        tile.GetComponent<Renderer>().material.shader = unlitShader;
         return tile;
     }
 
