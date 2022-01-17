@@ -25,7 +25,8 @@ public class Tile
         int tMax =
             2 *
             Mathf
-                .CeilToInt(Camera.main.orthographicSize *
+                .CeilToInt(1 +
+                Camera.main.orthographicSize *
                 Screen.width /
                 Screen.height /
                 Mathf.Sqrt(2));
@@ -33,9 +34,8 @@ public class Tile
         int rMax =
             2 *
             Mathf
-                .FloorToInt(Camera.main.orthographicSize *
-                Mathf.Sqrt(2) /
-                Mathf.Sqrt(3));
+                .FloorToInt(1 +
+                Camera.main.orthographicSize * Mathf.Sqrt(2) / Mathf.Sqrt(3));
 
         List<Tile> tiles = new List<Tile>();
         for (float r = 0; r <= rMax; r++)
@@ -51,7 +51,10 @@ public class Tile
                 GameObject gameObject =
                     GameObject.CreatePrimitive(PrimitiveType.Cube);
                 gameObject.transform.position =
-                    CoordinateSystem.FromAxialToWorld(screenAxial);
+                    CoordinateSystem
+                        .FromAxialToWorld(CoordinateSystem
+                            .FromWorldToAxial(CoordinateSystem
+                                .FromAxialToWorld(screenAxial)));
                 gameObject.transform.rotation = pointTopRotation;
 
                 tiles.Add(new Tile(screenAxial, gameObject));
