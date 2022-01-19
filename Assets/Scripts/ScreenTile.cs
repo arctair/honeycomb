@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tile
+public class ScreenTile
 {
-    public Vector2 screenAxial;
+    public Vector2 screenAxialOffset;
 
     public GameObject gameObject;
 
-    public Tile(Vector2 screenAxial, GameObject gameObject)
+    public ScreenTile(Vector2 screenAxialOffset, GameObject gameObject)
     {
-        this.screenAxial = screenAxial;
+        this.screenAxialOffset = screenAxialOffset;
         this.gameObject = gameObject;
     }
 
-    public static List<Tile> ScreenTiles()
+    public static List<ScreenTile> ScreenTiles()
     {
         Shader unlitShader = Shader.Find("Unlit/Color");
         Quaternion pointTopRotation =
@@ -38,12 +38,12 @@ public class Tile
                 .FloorToInt(1 +
                 Camera.main.orthographicSize * Mathf.Sqrt(2) / Mathf.Sqrt(3));
 
-        List<Tile> tiles = new List<Tile>();
+        List<ScreenTile> tiles = new List<ScreenTile>();
         for (float r = 0; r <= rMax; r++)
         {
             for (int t = 0; t <= tMax; t++)
             {
-                Vector2 screenAxial =
+                Vector2 screenAxialOffset =
                     new Vector2(t -
                         Mathf.FloorToInt((r - rMax / 2 + 1) / 2) -
                         tMax / 2,
@@ -52,15 +52,12 @@ public class Tile
                 GameObject gameObject =
                     GameObject.CreatePrimitive(PrimitiveType.Cube);
                 gameObject.transform.position =
-                    CoordinateSystem
-                        .FromAxialToWorld(CoordinateSystem
-                            .FromWorldToAxial(CoordinateSystem
-                                .FromAxialToWorld(screenAxial)));
+                    CoordinateSystem.FromAxialToWorld(screenAxialOffset);
                 gameObject.transform.rotation = pointTopRotation;
                 gameObject.GetComponent<Renderer>().material.shader =
                     unlitShader;
 
-                tiles.Add(new Tile(screenAxial, gameObject));
+                tiles.Add(new ScreenTile(screenAxialOffset, gameObject));
             }
         }
         return tiles;

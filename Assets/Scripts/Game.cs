@@ -5,15 +5,16 @@ using UnityEngine.EventSystems;
 
 public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
 {
-    private List<Tile> tiles;
+    private List<ScreenTile> tiles;
 
     void Start()
     {
-        tiles = Tile.ScreenTiles();
-        foreach (Tile tile in tiles)
+        tiles = ScreenTile.ScreenTiles();
+        foreach (ScreenTile tile in tiles)
         {
             tile.gameObject.transform.parent = transform;
-            Vector2 world = CoordinateSystem.FromAxialToWorld(tile.screenAxial);
+            Vector2 world =
+                CoordinateSystem.FromAxialToWorld(tile.screenAxialOffset);
 
             Renderer renderer = tile.gameObject.GetComponent<Renderer>();
             renderer.material.color =
@@ -27,19 +28,15 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
     {
         Vector2 axialOffset = CoordinateSystem.FromWorldToAxial(worldOffset);
         Vector2 axialOffsetMod = axialOffset.Mod(1).Add(1).Mod(1);
-        foreach (Tile tile in tiles)
+        foreach (ScreenTile tile in tiles)
         {
-            tile.gameObject.transform.position =
+            Vector2 screenOffset =
                 CoordinateSystem
-                    .FromAxialToWorld(tile.screenAxial - axialOffsetMod);
-
-            Vector2 world =
-                CoordinateSystem
-                    .FromAxialToWorld(tile.screenAxial -
-                    axialOffsetMod +
-                    axialOffset);
+                    .FromAxialToWorld(tile.screenAxialOffset - axialOffsetMod);
+            tile.gameObject.transform.position = screenOffset;
+            float sample = Sample(screenOffset + worldOffset);
             tile.gameObject.GetComponent<Renderer>().material.color =
-                Color.HSVToRGB(0.125f, 0.75f, Sample(world));
+                Color.HSVToRGB(0.125f, 0.75f, sample);
         }
     }
 
