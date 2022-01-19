@@ -7,9 +7,12 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
 {
     private List<ScreenTile> tiles;
 
+    private GameObject cursor;
+
     void Start()
     {
-        tiles = new TileFactory(Shader.Find("Unlit/Color")).CreateScreen();
+        TileFactory tileFactory = new TileFactory(Shader.Find("Unlit/Color"));
+        tiles = tileFactory.CreateScreen();
         foreach (ScreenTile tile in tiles)
         {
             tile.gameObject.transform.parent = transform;
@@ -17,6 +20,9 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
             tile.gameObject.GetComponent<Renderer>().material.color =
                 Color.HSVToRGB(0.125f, 0.75f, sample);
         }
+        cursor = tileFactory.Create();
+        cursor.transform.parent = transform;
+        cursor.GetComponent<Renderer>().material.color = Color.green;
     }
 
     private Vector2 worldOffset;
@@ -34,6 +40,8 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
             tile.gameObject.GetComponent<Renderer>().material.color =
                 Color.HSVToRGB(0.125f, 0.75f, sample);
         }
+        cursor.transform.position =
+            Input.mousePosition.FromScreenToWorld().SetZ(-1);
     }
 
     private float Sample(Vector2 world)
