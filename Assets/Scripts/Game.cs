@@ -23,8 +23,8 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
 
     void Update()
     {
-        Vector2 axialOffset = worldOffset.FromWorldToAxial();
-        Vector2 axialOffsetMod = axialOffset.Mod(1).Add(1).Mod(1);
+        Vector2 axialOffsetMod =
+            worldOffset.FromWorldToAxial().Mod(1).Add(1).Mod(1);
         foreach (ScreenTile tile in tiles)
         {
             Vector2 screenOffset =
