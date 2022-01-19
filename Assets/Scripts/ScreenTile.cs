@@ -52,7 +52,7 @@ public class ScreenTile
                 GameObject gameObject =
                     GameObject.CreatePrimitive(PrimitiveType.Cube);
                 gameObject.transform.position =
-                    CoordinateSystem.FromAxialToWorld(screenAxialOffset);
+                    screenAxialOffset.FromAxialToWorld();
                 gameObject.transform.rotation = pointTopRotation;
                 gameObject.GetComponent<Renderer>().material.shader =
                     unlitShader;

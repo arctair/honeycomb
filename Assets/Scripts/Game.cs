@@ -13,12 +13,9 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
         foreach (ScreenTile tile in tiles)
         {
             tile.gameObject.transform.parent = transform;
-            Vector2 world =
-                CoordinateSystem.FromAxialToWorld(tile.screenAxialOffset);
-
-            Renderer renderer = tile.gameObject.GetComponent<Renderer>();
-            renderer.material.color =
-                Color.HSVToRGB(0.125f, 0.75f, Sample(world));
+            float sample = Sample(tile.screenAxialOffset.FromAxialToWorld());
+            tile.gameObject.GetComponent<Renderer>().material.color =
+                Color.HSVToRGB(0.125f, 0.75f, sample);
         }
     }
 
@@ -26,13 +23,12 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
 
     void Update()
     {
-        Vector2 axialOffset = CoordinateSystem.FromWorldToAxial(worldOffset);
+        Vector2 axialOffset = worldOffset.FromWorldToAxial();
         Vector2 axialOffsetMod = axialOffset.Mod(1).Add(1).Mod(1);
         foreach (ScreenTile tile in tiles)
         {
             Vector2 screenOffset =
-                CoordinateSystem
-                    .FromAxialToWorld(tile.screenAxialOffset - axialOffsetMod);
+                (tile.screenAxialOffset - axialOffsetMod).FromAxialToWorld();
             tile.gameObject.transform.position = screenOffset;
             float sample = Sample(screenOffset + worldOffset);
             tile.gameObject.GetComponent<Renderer>().material.color =
