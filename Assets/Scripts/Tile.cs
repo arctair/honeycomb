@@ -16,6 +16,7 @@ public class Tile
 
     public static List<Tile> ScreenTiles()
     {
+        Shader unlitShader = Shader.Find("Unlit/Color");
         Quaternion pointTopRotation =
             Quaternion
                 .Euler(90 - Mathf.Atan(1 / Mathf.Sqrt(2)) / Mathf.PI * 180,
@@ -56,6 +57,8 @@ public class Tile
                             .FromWorldToAxial(CoordinateSystem
                                 .FromAxialToWorld(screenAxial)));
                 gameObject.transform.rotation = pointTopRotation;
+                gameObject.GetComponent<Renderer>().material.shader =
+                    unlitShader;
 
                 tiles.Add(new Tile(screenAxial, gameObject));
             }

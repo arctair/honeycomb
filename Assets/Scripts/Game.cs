@@ -9,8 +9,6 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
 
     void Start()
     {
-        Shader unlitShader = Shader.Find("Unlit/Color");
-
         tiles = Tile.ScreenTiles();
         foreach (Tile tile in tiles)
         {
@@ -18,7 +16,6 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
             Vector2 world = CoordinateSystem.FromAxialToWorld(tile.screenAxial);
 
             Renderer renderer = tile.gameObject.GetComponent<Renderer>();
-            renderer.material.shader = unlitShader;
             renderer.material.color =
                 Color.HSVToRGB(0.125f, 0.75f, Sample(world));
         }
