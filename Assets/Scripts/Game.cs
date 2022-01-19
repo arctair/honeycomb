@@ -26,7 +26,7 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
     void Update()
     {
         Vector2 axialOffset = CoordinateSystem.FromWorldToAxial(worldOffset);
-        Vector2 axialOffsetMod = Mod2(Add2(Mod2(axialOffset, 1), 1), 1);
+        Vector2 axialOffsetMod = axialOffset.Mod(1).Add(1).Mod(1);
         foreach (Tile tile in tiles)
         {
             tile.gameObject.transform.position =
@@ -41,16 +41,6 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
             tile.gameObject.GetComponent<Renderer>().material.color =
                 Color.HSVToRGB(0.125f, 0.75f, Sample(world));
         }
-    }
-
-    private static Vector2 Mod2(Vector2 v2, float s)
-    {
-        return new Vector2(v2[0] % s, v2[1] % s);
-    }
-
-    private static Vector2 Add2(Vector2 v2, float s)
-    {
-        return new Vector2(v2[0] + s, v2[1] + s);
     }
 
     private float Sample(Vector2 world)
