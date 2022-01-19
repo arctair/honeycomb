@@ -41,7 +41,15 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
                 Color.HSVToRGB(0.125f, 0.75f, sample);
         }
         cursor.transform.position =
-            Input.mousePosition.FromScreenToWorld().SetZ(-1);
+            Input
+                .mousePosition
+                .FromScreenToWorld()
+                .FromWorldToAxial()
+                .Add(axialOffsetMod)
+                .AxialRound()
+                .Add(-axialOffsetMod)
+                .FromAxialToWorld()
+                .SetZ(-1);
     }
 
     private float Sample(Vector2 world)

@@ -26,6 +26,47 @@ public static class CoordinateSystemExtensions
         Camera.main.orthographicSize;
     }
 
+    public static Vector2 AxialRound(this Vector2 axial)
+    {
+        return axial.FromAxialToCube().CubeRound().FromCubeToAxial();
+    }
+
+    public static Vector3 FromAxialToCube(this Vector2 axial)
+    {
+        return new Vector3(axial[0], axial[1], -axial[0] - axial[1]);
+    }
+
+    public static Vector3 CubeRound(this Vector3 cube)
+    {
+        float q = Mathf.Round(cube[0]);
+        float r = Mathf.Round(cube[1]);
+        float s = Mathf.Round(cube[2]);
+
+        float dq = Mathf.Abs(q - cube[0]);
+        float dr = Mathf.Abs(r - cube[1]);
+        float ds = Mathf.Abs(s - cube[2]);
+
+        if (dq > dr && dq > ds)
+        {
+            q = -r - s;
+        }
+        else if (dr > ds)
+        {
+            r = -q - s;
+        }
+        else
+        {
+            s = -q - r;
+        }
+
+        return new Vector3(q, r, s);
+    }
+
+    public static Vector2 FromCubeToAxial(this Vector3 cube)
+    {
+        return new Vector2(cube[0], cube[1]);
+    }
+
     public static Vector3 SetZ(this Vector2 v, float z)
     {
         return new Vector3(v[0], v[1], z);
