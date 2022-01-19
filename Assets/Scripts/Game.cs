@@ -9,7 +9,7 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
 
     void Start()
     {
-        tiles = ScreenTile.ScreenTiles();
+        tiles = new TileFactory(Shader.Find("Unlit/Color")).CreateScreen();
         foreach (ScreenTile tile in tiles)
         {
             tile.gameObject.transform.parent = transform;
