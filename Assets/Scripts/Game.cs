@@ -28,7 +28,7 @@ public class Game : MonoBehaviour, IDragHandler, IBeginDragHandler
 
     private Vector2 worldOffset;
 
-    private float scale = 2;
+    private float scale = 0.25f;
 
     private float scalePow => Mathf.Pow(2, scale);
 
